@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="IJsselmeer"/>
+<title>IJsselmeer 2026</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#f0eeea}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+#root{min-height:100%;background:#f0eeea}
+input,textarea{font-family:inherit;font-size:14px;padding:10px 12px;border:1px solid rgba(0,0,0,0.18);border-radius:10px;background:#fff;color:#1a1a1a;outline:none;width:100%;-webkit-appearance:none;appearance:none}
+input:focus,textarea:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,0.12)}
+button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+textarea{resize:vertical;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect}=React;
+const START=new Date("2026-03-16");
+const DNms=["Zo","Ma","Di","Wo","Do","Vr","Za"];
+function wkNum(d=new Date()){return Math.max(1,Math.min(25,Math.floor((d-START)/604800000)+1));}
+function dKey(d=new Date()){return d.toISOString().slice(0,10);}
+const PMAP={1:"o",2:"o",3:"o",4:"o",5:"o",6:"o",7:"p",8:"p",9:"p",10:"p",11:"p",12:"p",13:"h",14:"h",15:"v",16:"v",17:"v",18:"v",19:"v",20:"v",21:"pk",22:"pk",23:"pk",24:"t",25:"t"};
+const PH={o:{n:"Opbouw",c:"#1D9E75",bg:"#E1F5EE",rng:"Wk 1-6"},p:{n:"Race-prep",c:"#185FA5",bg:"#E6F1FB",rng:"Wk 7-12"},h:{n:"Herstel",c:"#888780",bg:"#F1EFE8",rng:"Wk 13-14"},v:{n:"Volume",c:"#BA7517",bg:"#FAEEDA",rng:"Wk 15-20"},pk:{n:"Piek",c:"#993C1D",bg:"#FAECE7",rng:"Wk 21-23"},t:{n:"Taper",c:"#534AB7",bg:"#EEEDFE",rng:"Wk 24-25"}};
+const TC={endurance:["#E1F5EE","#0F6E56"],interval:["#FAECE7","#993C1D"],technique:["#EEEDFE","#534AB7"],long:["#E6F1FB","#185FA5"],recovery:["#F1EFE8","#5F5E5A"],openwater:["#FAEEDA","#854F0B"],race:["#FCEBEB","#A32D2D"],droog:["#EAF3DE","#3B6D11"],yoga:["#FBEAF0","#993556"]};
+const TL={endurance:"Uithouding",interval:"Intervallen",technique:"Techniek",long:"Lang",recovery:"Herstel",openwater:"Open water",race:"Wedstrijd",droog:"Droogtraining",yoga:"Yoga"};
+const DRY={o:[{type:"droog",desc:"Mobiliteit 15 min (thread the needle, arm circles) + core: plank met rotatie 3x10, dead bug 3x8, band pull-aparts 3x15",dist:"30 min"}],p:[{type:"droog",desc:"Core 20 min: pallof press 3x10, dead bug 3x8, plank rotatie 3x10. Schouder: face pulls 3x12, lat band 3x12",dist:"20 min"},{type:"yoga",desc:"Yoga swimroutine 20 min: thread the needle, gomukhasana, boot pose, liggende draai, 4-7-8 ademhaling",dist:"20 min"}],h:[{type:"yoga",desc:"Yin yoga 45 min herstel na dubbele raceweek. YouTube: yin yoga for swimmers",dist:"45 min"}],v:[{type:"droog",desc:"Kracht 35 min: single-leg deadlift 3x8, Y-T-W 2x10, face pulls 3x12, lat band 3x12, core 15 min",dist:"35 min"},{type:"yoga",desc:"Yoga routine 20 min + yoga nidra 20 min na zware trainingsweek",dist:"40 min"}],pk:[{type:"droog",desc:"Schouderprogramma: Y-T-W 2x10, face pulls 3x15, band pull-aparts 3x20 + lichte core 15 min",dist:"25 min"},{type:"yoga",desc:"Yin yoga 30 min + yoga nidra 20 min",dist:"50 min"}],t:[{type:"yoga",desc:"Alleen mobiliteit 5 min + band pull-aparts + yoga nidra 20 min. Geen krachtsessies.",dist:"30 min"}]};
+const WKS=[{vol:14,dates:"16-20 mrt",tip:"Direct naar langere afstanden, je basis is goed. Gebruik week 1 om je ritme te vinden.",sessions:[{day:"Ma",type:"endurance",desc:"4 km comfortabel nulmeting",dist:"4 km"},{day:"Wo",type:"technique",desc:"3 km techniek slaglengte sighting",dist:"3 km"},{day:"Vr",type:"long",desc:"6 km rustig doorzwemmen",dist:"6 km"}]},{vol:16,dates:"23-27 mrt",tip:"Eerste voedingstest: neem een gel mee en oefen met eten tijdens het zwemmen.",sessions:[{day:"Ma",type:"endurance",desc:"5 km steady",dist:"5 km"},{day:"Wo",type:"interval",desc:"8x200m plus 2 km warm cool",dist:"3.5 km"},{day:"Vr",type:"long",desc:"7 km gel testen bij km 4",dist:"7 km"}]},{vol:18,dates:"30 mrt-3 apr",tip:"Eerste 4-daagse zwemweek.",sessions:[{day:"Ma",type:"endurance",desc:"5 km steady",dist:"5 km"},{day:"Di",type:"interval",desc:"10x200m op goed tempo",dist:"4 km"},{day:"Wo",type:"technique",desc:"3 km pull buoy plus drills",dist:"3 km"},{day:"Vr",type:"long",desc:"8 km denk in blokken van 2 km",dist:"8 km"}]},{vol:16,dates:"6-10 apr",tip:"Herstelweek, schoudermobilisatie dagelijks. Wetsuit voor het eerst aantrekken.",sessions:[{day:"Ma",type:"recovery",desc:"3 km herstel",dist:"3 km"},{day:"Wo",type:"technique",desc:"4 km wetsuit plus drills",dist:"4 km"},{day:"Vr",type:"endurance",desc:"7 km comfortabel",dist:"7 km"}]},{vol:20,dates:"13-17 apr",tip:"Open water kan starten als het water 14 graden of meer is. 9 km is een mijlpaal.",sessions:[{day:"Ma",type:"endurance",desc:"5 km steady state",dist:"5 km"},{day:"Di",type:"interval",desc:"6x400m plus 2 km warm cool",dist:"4.5 km"},{day:"Wo",type:"openwater",desc:"Open water sessie indien warm genoeg",dist:"4 km"},{day:"Vr",type:"long",desc:"9 km voeding elke 45 min",dist:"9 km"}]},{vol:22,dates:"20-24 apr",tip:"10 km in de pool. Je kunt de 6 km wedstrijd al comfortabel zwemmen.",sessions:[{day:"Ma",type:"endurance",desc:"6 km steady",dist:"6 km"},{day:"Di",type:"interval",desc:"5x500m op streeftempo",dist:"4.5 km"},{day:"Wo",type:"openwater",desc:"Open water navigatie oefenen",dist:"4.5 km"},{day:"Vr",type:"long",desc:"10 km halverwege voeden",dist:"10 km"}]},{vol:24,dates:"27 apr-1 mei",tip:"Eerste 11 km sessie. Wat voel je na km 8-9? Die signalen zijn goud voor september.",sessions:[{day:"Ma",type:"endurance",desc:"6 km steady",dist:"6 km"},{day:"Di",type:"interval",desc:"4x1 km blokken op wedstrijdtempo",dist:"5 km"},{day:"Wo",type:"openwater",desc:"Open water lange sessie 6 km",dist:"6 km"},{day:"Vr",type:"long",desc:"11 km",dist:"11 km"}]},{vol:26,dates:"4-8 mei",tip:"12 km in de pool: je bent nu klaar voor de 12 km wedstrijd op 5 juni.",sessions:[{day:"Ma",type:"endurance",desc:"6 km steady",dist:"6 km"},{day:"Di",type:"interval",desc:"12x200m rust 20 sec",dist:"4.5 km"},{day:"Wo",type:"openwater",desc:"Open water golven en wetsuit",dist:"5.5 km"},{day:"Vr",type:"long",desc:"12 km piek voor raceblok",dist:"12 km"}]},{vol:24,dates:"11-15 mei",tip:"Volume iets terug, fris aan de start van 29 mei.",sessions:[{day:"Ma",type:"endurance",desc:"6 km comfortabel",dist:"6 km"},{day:"Di",type:"interval",desc:"8x300m scherp",dist:"4 km"},{day:"Wo",type:"openwater",desc:"Open water wedstrijdsimulatie 6 km",dist:"6 km"},{day:"Vr",type:"long",desc:"10 km",dist:"10 km"}]},{vol:18,dates:"18-22 mei",tip:"Taper voor 29 mei. Licht, scherp, geen zware sessies meer.",sessions:[{day:"Ma",type:"endurance",desc:"5 km steady",dist:"5 km"},{day:"Wo",type:"interval",desc:"6x200m scherp plus 2 km",dist:"3.5 km"},{day:"Vr",type:"openwater",desc:"Open water 6 km preview",dist:"6 km"}]},{vol:12,dates:"25-29 mei",tip:"Raceweek, ga niet all-out op 29 mei, volgende vrijdag de 12 km.",sessions:[{day:"Ma",type:"recovery",desc:"3 km rustig herstel",dist:"3 km"},{day:"Di",type:"technique",desc:"2 km licht wetsuit check",dist:"2 km"},{day:"Wo",type:"recovery",desc:"2 km losse benen",dist:"2 km"},{day:"Do",type:"race",desc:"WEDSTRIJD 6 km open water",dist:"6 km"}]},{vol:14,dates:"1-5 jun",tip:"Dinsdag woensdag zo min mogelijk zwemmen. Vertrouw op 8 weken opbouw.",sessions:[{day:"Ma",type:"recovery",desc:"3 km herstelzwemmen",dist:"3 km"},{day:"Di",type:"recovery",desc:"2 km licht",dist:"2 km"},{day:"Wo",type:"recovery",desc:"2 km heel rustig",dist:"2 km"},{day:"Vr",type:"race",desc:"WEDSTRIJD 12 km open water",dist:"12 km"}]},{vol:12,dates:"8-12 jun",tip:"Twee events in een week. Echte rust, september is nog ver.",sessions:[{day:"Ma",type:"recovery",desc:"3 km rustig",dist:"3 km"},{day:"Wo",type:"technique",desc:"3 km drills geen druk",dist:"3 km"},{day:"Vr",type:"endurance",desc:"5 km comfortabel",dist:"5 km"}]},{vol:15,dates:"15-19 jun",tip:"Herstel bijna klaar. Volumes stijgen weer.",sessions:[{day:"Ma",type:"endurance",desc:"4 km steady",dist:"4 km"},{day:"Wo",type:"interval",desc:"8x200m ritme terugvinden",dist:"3.5 km"},{day:"Vr",type:"long",desc:"8 km",dist:"8 km"}]},{vol:22,dates:"22-26 jun",tip:"Zomerfase start. Bouw gestaag op.",sessions:[{day:"Ma",type:"endurance",desc:"6 km steady",dist:"6 km"},{day:"Di",type:"interval",desc:"5x600m plus 2 km",dist:"5 km"},{day:"Wo",type:"openwater",desc:"Open water sessie",dist:"5 km"},{day:"Vr",type:"long",desc:"10 km",dist:"10 km"}]},{vol:25,dates:"29 jun-3 jul",tip:"12 km voelt nu anders dan in mei, je bent sterker.",sessions:[{day:"Ma",type:"endurance",desc:"6 km",dist:"6 km"},{day:"Di",type:"interval",desc:"3x2 km blokken",dist:"8 km"},{day:"Wo",type:"openwater",desc:"Open water",dist:"5 km"},{day:"Vr",type:"long",desc:"12 km",dist:"12 km"}]},{vol:27,dates:"6-10 jul",tip:"Voeding elke 40 min bij sessies langer dan 8 km.",sessions:[{day:"Ma",type:"endurance",desc:"6 km",dist:"6 km"},{day:"Di",type:"interval",desc:"4x2 km op streeftempo",dist:"9 km"},{day:"Wo",type:"openwater",desc:"Open water",dist:"6 km"},{day:"Vr",type:"long",desc:"13 km",dist:"13 km"}]},{vol:24,dates:"13-17 jul",tip:"Herstelweek. Schouders checken, pijn is rust.",sessions:[{day:"Ma",type:"recovery",desc:"5 km herstel",dist:"5 km"},{day:"Wo",type:"technique",desc:"5 km techniek en wetsuit",dist:"5 km"},{day:"Vr",type:"long",desc:"12 km",dist:"12 km"}]},{vol:30,dates:"20-24 jul",tip:"14 km. Noteer hoe je je voelt na km 12.",sessions:[{day:"Ma",type:"endurance",desc:"7 km steady",dist:"7 km"},{day:"Di",type:"interval",desc:"5x2 km",dist:"11 km"},{day:"Wo",type:"openwater",desc:"Open water 7 km",dist:"7 km"},{day:"Vr",type:"long",desc:"14 km",dist:"14 km"}]},{vol:32,dates:"27-31 jul",tip:"17 km, alles simuleren: wetsuit, voeding, navigatie.",sessions:[{day:"Ma",type:"endurance",desc:"7 km",dist:"7 km"},{day:"Di",type:"interval",desc:"4x3 km blokken",dist:"13 km"},{day:"Wo",type:"openwater",desc:"Open water 6 km",dist:"6 km"},{day:"Vr",type:"long",desc:"17 km piektraining",dist:"17 km"}]},{vol:35,dates:"3-7 aug",tip:"Piekweek. Je bent klaar voor 22 km.",sessions:[{day:"Ma",type:"endurance",desc:"7 km steady",dist:"7 km"},{day:"Di",type:"interval",desc:"5x2 km op wedstrijdtempo",dist:"11 km"},{day:"Wo",type:"openwater",desc:"Open water 7 km",dist:"7 km"},{day:"Vr",type:"long",desc:"15 km",dist:"15 km"}]},{vol:30,dates:"10-14 aug",tip:"Kwaliteit boven kwantiteit.",sessions:[{day:"Ma",type:"endurance",desc:"7 km",dist:"7 km"},{day:"Di",type:"interval",desc:"4x2 km",dist:"9 km"},{day:"Wo",type:"openwater",desc:"Open water 6 km",dist:"6 km"},{day:"Vr",type:"long",desc:"13 km steady",dist:"13 km"}]},{vol:25,dates:"17-21 aug",tip:"Laatste intensieve week. Na vrijdag start de taper.",sessions:[{day:"Ma",type:"endurance",desc:"6 km",dist:"6 km"},{day:"Wo",type:"interval",desc:"6x400m scherp plus 3 km",dist:"5.5 km"},{day:"Vr",type:"long",desc:"12 km laatste lange sessie",dist:"12 km"}]},{vol:16,dates:"24-28 aug",tip:"Volume gehalveerd. Intensiteit bewaren in de intervallen.",sessions:[{day:"Ma",type:"endurance",desc:"5 km comfortabel",dist:"5 km"},{day:"Wo",type:"interval",desc:"5x200m scherp plus 2 km",dist:"3 km"},{day:"Vr",type:"endurance",desc:"6 km steady",dist:"6 km"}]},{vol:9,dates:"31 aug-4 sep",tip:"Je bent klaar. 25 weken werk liggen in je lichaam. Vertrouw erop.",sessions:[{day:"Ma",type:"endurance",desc:"4 km rustig",dist:"4 km"},{day:"Wo",type:"technique",desc:"2 km licht wetsuit en voeding check",dist:"2 km"},{day:"Do",type:"recovery",desc:"1 km losse benen",dist:"1 km"},{day:"Vr",type:"race",desc:"IJSSELMEEROVERSTEEK 22 km",dist:"22 km"}]}];
+const TIPS={voeding:[{t:"Dagelijkse koolhydraten",b:"3-5 g KH per kg lichaamsgewicht op trainingsdagen. Avond voor lange sessie: extra KH (pasta, rijst, quinoa). Ontbijt 90-120 min voor het zwemmen."},{t:"Tijdens zwemmen meer dan 8 km",b:"Elke 40-45 min: energiegel of maltodextrine-drank (60-90 g KH per uur). Test alles voor september, nooit iets nieuws op de wedstrijddag."},{t:"Herstelvoeding",b:"Binnen 30 min na training: 20-30 g eiwit plus koolhydraten. Chocolademelk werkt verrassend goed. Of kwark met banaan en honing."},{t:"Hydratatie",b:"500 ml voor de sessie, 250 ml per zwemuur. Herstel na lange sessies met elektrolyten. Zwemmers onderschatten dorst, je voelt het water niet."},{t:"IJsselmeer voedingsplan",b:"Gel elke 40 min via begeleidingsboot. Maltodextrine-drank als basis. Vaste voeding (banaan, rijstwafel) bij km 8 en km 16. Alles testen in de lange trainingen."},{t:"Gewicht en prestatie",b:"2% gewichtsverlies door dehydratie verlaagt prestatie significant. Weeg voor en na een lange training om je zweetverlies te kennen."}],ademhaling:[{t:"4-7-8 voor het slapen",b:"In 4 tellen, vasthouden 7, uitademen 8. Doe 4-6 cycli voor het slapen. Activeert het parasympatisch systeem en versnelt herstel."},{t:"Box breathing voor events",b:"In 4, hold 4, uit 4, hold 4. Herhaal 10 min voor de start op 29 mei, 5 juni en 4 september. Verlaagt spanning, verhoogt focus."},{t:"Neus-buikademhaling",b:"Oefen dagelijks 5 min: adem via de neus naar de buik. Verhoogt CO2-tolerantie, je kunt langer wachten met inademen tijdens het zwemmen."},{t:"Slagritme en ademhaling",b:"Streef naar inademen elke 3 slagen (bilateraal). Bij hoge intensiteit: elke 2 slagen. Nooit elke slag, vermoeit te snel."},{t:"Mentale ademhaling bij 22 km",b:"Bij moeilijke momenten: 5 slagen inademen, 5 uitademen. Koppel aan je slag. Oefen in de pool zodat het reflexmatig wordt."}],yoga:[{t:"Thread the needle dagelijks",b:"Op handen en knieen. Schuif een arm door onder het lichaam. 60 sec per kant. Opent de thoraxrotatie die je bij elke crawlslag maakt."},{t:"Gomukhasana armen",b:"Een arm omhoog achter het hoofd, de andere omlaag langs de rug. Gebruik een handdoek als verbinding. 45 sec per kant."},{t:"Liggende werveldraaing",b:"Op de rug, een knie naar de tegenoverliggende kant. Perfecte afsluiting na lange zwemtrainingen. 90 sec per kant."},{t:"Yin yoga 1 keer per week",b:"45-60 min op donderdag. YouTube: yin yoga for swimmers. Opent bindweefsel dat bij actieve stretching niet loskomt."},{t:"Yoga nidra na lange trainingen",b:"30-45 min liggende geleide meditatie. Gratis op Insight Timer of YouTube. Wetenschappelijk aangetoond hersteleffect."},{t:"20-min donderdagroutine",b:"1. Kindhouding 60s, 2. Kat-koe 10x, 3. Neerwaartse hond 60s, 4. Thread the needle 2x60s, 5. Gomukhasana 2x45s, 6. Boot pose 3x30s, 7. Liggende draai 2x90s, 8. Savasana 3 min."}],algemeen:[{t:"Sighting in open water",b:"Hef je hoofd elke 10-12 slagen voor orientatie. Zonder sighting zwem je 5-10% extra afstand, op 22 km is dat ruim 1 km."},{t:"Wetsuit training",b:"Oefen met de wetsuit in de pool zodra mogelijk. Wennen kost 2-3 sessies. IJsselmeer in september ca 18 graden, wetsuit sterk aanbevolen."},{t:"Schouderpijn is stopcriterium",b:"Scherpe pijn = stop direct. Pijn langer dan 24u = rust plus arts. Overbelasting kost meer tijd dan preventieve rust."},{t:"Begeleidingsboot regelen",b:"Regel de boot voor 4 september NU. Ze zijn in de zomer snel volgeboekt. De boot levert voeding en biedt veiligheid."},{t:"Mentale blokken bij 22 km",b:"Verdeel in 10 blokken van 2,2 km. Na elk blok: positieve gedachte plus voedingsinname. Schrijf vooraf op waarom je dit doet."},{t:"Slaap is training",b:"8 plus uur in piekweken. Spierherstel en glycogeenopbouw vinden s nachts plaats. Minder slaap = minder trainingseffect plus hoger blessurerisico."}]};
+const MOODS=[{v:1,l:"Uitgeput",e:"😴"},{v:2,l:"Moe",e:"😕"},{v:3,l:"Oké",e:"😐"},{v:4,l:"Goed",e:"😊"},{v:5,l:"Top",e:"💪"}];
+
+function saveLog(k,d){try{localStorage.setItem("log:"+k,JSON.stringify(d));return true;}catch(er){return false;}}
+function loadLogs(){try{var o={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith("log:")){try{o[k.replace("log:","")]=JSON.parse(localStorage.getItem(k));}catch(er){}}}return o;}catch(er){return {};}}
+
+function App(){
+  var today=new Date();
+  var todayKey=dKey(today);
+  var curWk=wkNum(today);
+  var phKey=PMAP[curWk]||"o";
+  var ph=PH[phKey];
+  var wkData=WKS[curWk-1];
+  var todayDay=DNms[today.getDay()];
+  var isWknd=today.getDay()===0||today.getDay()===6;
+  var r=useState("vandaag");var tab=r[0];var setTab=r[1];
+  var r2=useState({});var logs=r2[0];var setLogs=r2[1];
+  var r3=useState({weight:"",mood:3,sleep:"",notes:""});var form=r3[0];var setForm=r3[1];
+  var r4=useState(false);var saved=r4[0];var setSaved=r4[1];
+  var r5=useState(null);var openWk=r5[0];var setOpenWk=r5[1];
+  var r6=useState("voeding");var tTab=r6[0];var setTTab=r6[1];
+
+  useEffect(function(){
+    var data=loadLogs();
+    setLogs(data);
+    if(data[todayKey]){var en=data[todayKey];setForm({weight:en.weight||"",mood:en.mood||3,sleep:en.sleep||"",notes:en.notes||""});}
+  },[]);
+
+  function handleSave(){
+    var entry=Object.assign({},form,{date:todayKey});
+    saveLog(todayKey,entry);
+    setLogs(function(p){var n=Object.assign({},p);n[todayKey]=entry;return n;});
+    setSaved(true);
+    setTimeout(function(){setSaved(false);},2500);
+  }
+
+  var swimS=wkData?wkData.sessions.filter(function(s){return s.day===todayDay;}):[]; 
+  var hasRace=swimS.some(function(s){return s.type==="race";});
+  var showDry=todayDay==="Do"&&!hasRace;
+  var dryS=showDry?(DRY[phKey]||[]).map(function(d){return Object.assign({},d,{day:"Do"});}):[];
+  var todaySessions=swimS.concat(dryS);
+
+  var logArr=Object.entries(logs).filter(function(a){return a[1].weight&&!isNaN(+a[1].weight);}).sort(function(a,b){return a[0]<b[0]?-1:1;}).slice(-20);
+  var wts=logArr.map(function(a){return +a[1].weight;});
+  var wMin=wts.length?Math.min.apply(null,wts)-1:65;
+  var wMax=wts.length?Math.max.apply(null,wts)+1:75;
+
+  var e=React.createElement;
+  function badge(type){var bc=TC[type]||["#F1EFE8","#5F5E5A"];return e("span",{style:{fontSize:11,padding:"3px 8px",borderRadius:20,background:bc[0],color:bc[1],flexShrink:0,whiteSpace:"nowrap"}},TL[type]||type);}
+
+  function renderVandaag(){
+    var daysLeft=Math.max(0,175-Math.round((today-START)/86400000));
+    return e("div",null,
+      e("div",{style:{background:"#fff",borderRadius:16,padding:16,marginBottom:16,boxShadow:"0 1px 4px rgba(0,0,0,0.07)"}},
+        e("div",{style:{fontSize:13,color:"#999"}},today.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long",year:"numeric"})),
+        e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:8}},
+          e("span",{style:{fontSize:24,fontWeight:700}},"Week ",curWk,e("span",{style:{fontSize:15,fontWeight:400,color:"#999"}},"/25")),
+          e("span",{style:{fontSize:12,padding:"4px 11px",borderRadius:20,background:ph.bg,color:ph.c,fontWeight:700}},ph.n)
+        ),
+        wkData&&e("div",{style:{fontSize:12,color:"#aaa",marginTop:2}},wkData.dates," · ",wkData.vol," km/week"),
+        e("div",{style:{marginTop:12,height:6,background:"#f0eeea",borderRadius:3,overflow:"hidden"}},e("div",{style:{width:Math.round(curWk/25*100)+"%",height:6,background:ph.c,borderRadius:3}})),
+        e("div",{style:{fontSize:11,color:"#bbb",marginTop:4}},Math.round(curWk/25*100),"% voltooid · nog ",daysLeft," dagen")
+      ),
+      e("div",{style:{fontSize:14,fontWeight:700,marginBottom:10}},"Training vandaag"),
+      isWknd?e("div",{style:{background:"#fff",borderRadius:12,padding:"12px 16px",fontSize:14,color:"#aaa",marginBottom:14,lineHeight:1.6,boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},"Weekend - rustdag. Optioneel: 5 min mobiliteit."):
+      todaySessions.length===0?e("div",{style:{background:"#fff",borderRadius:12,padding:"12px 16px",fontSize:14,color:"#aaa",marginBottom:14,boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},"Geen training vandaag - rustdag, doe je dagelijkse mobiliteit (5 min)."):
+      e("div",{style:{display:"flex",flexDirection:"column",gap:8,marginBottom:14}},
+        todaySessions.map(function(ss,i){return e("div",{key:i,style:{background:"#fff",borderRadius:12,padding:"12px 16px",boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},
+          e("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},badge(ss.type),e("span",{style:{fontSize:12,color:"#aaa",fontWeight:600}},ss.dist)),
+          e("div",{style:{fontSize:14,color:"#1a1a1a",lineHeight:1.55}},ss.desc)
+        );})
+      ),
+      wkData&&!isWknd&&e("div",{style:{borderLeft:"3px solid "+ph.c,background:"#fff",padding:"10px 14px",borderRadius:"0 10px 10px 0",fontSize:13,color:"#666",lineHeight:1.7,marginBottom:24,boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}},wkData.tip),
+      e("div",{style:{fontSize:14,fontWeight:700,marginBottom:12}},"Logboek vandaag"),
+      e("div",{style:{background:"#fff",borderRadius:16,padding:18,display:"flex",flexDirection:"column",gap:18,boxShadow:"0 1px 4px rgba(0,0,0,0.07)"}},
+        e("div",null,e("div",{style:{fontSize:13,color:"#999",marginBottom:8,fontWeight:600}},"Gewicht (kg)"),e("input",{type:"number",inputMode:"decimal",step:"0.1",min:"40",max:"150",value:form.weight,onChange:function(ev){setForm(function(p){return Object.assign({},p,{weight:ev.target.value});});},placeholder:"bijv. 74.5"})),
+        e("div",null,
+          e("div",{style:{fontSize:13,color:"#999",marginBottom:10,fontWeight:600}},"Hoe voel ik me?"),
+          e("div",{style:{display:"flex",gap:5}},
+            MOODS.map(function(m){return e("button",{key:m.v,onClick:function(){setForm(function(p){return Object.assign({},p,{mood:m.v});});},style:{flex:1,padding:"10px 2px",borderRadius:12,border:"2px solid "+(form.mood===m.v?ph.c:"rgba(0,0,0,0.08)"),background:form.mood===m.v?ph.bg:"#fff",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4}},
+              e("span",{style:{fontSize:22}},m.e),
+              e("span",{style:{fontSize:10,color:form.mood===m.v?ph.c:"#aaa",fontFamily:"inherit"}},m.l)
+            );})
+          )
+        ),
+        e("div",null,e("div",{style:{fontSize:13,color:"#999",marginBottom:8,fontWeight:600}},"Slaap (uren)"),e("input",{type:"number",inputMode:"decimal",step:"0.5",min:"0",max:"14",value:form.sleep,onChange:function(ev){setForm(function(p){return Object.assign({},p,{sleep:ev.target.value});});},placeholder:"bijv. 7.5"})),
+        e("div",null,e("div",{style:{fontSize:13,color:"#999",marginBottom:8,fontWeight:600}},"Notities"),e("textarea",{value:form.notes,onChange:function(ev){setForm(function(p){return Object.assign({},p,{notes:ev.target.value});});},placeholder:"Hoe voelde de training? Pijn? Bijzonderheden...",rows:3,style:{width:"100%",fontFamily:"inherit",fontSize:14,padding:"10px 12px",border:"1px solid rgba(0,0,0,0.15)",borderRadius:10,background:"#fff",color:"#1a1a1a",lineHeight:1.55,outline:"none"}})),
+        e("button",{onClick:handleSave,style:{padding:14,borderRadius:12,border:"none",background:saved?"#1D9E75":ph.c,color:"#fff",fontSize:15,fontWeight:700,cursor:"pointer",transition:"background 0.2s"}},saved?"Opgeslagen!":"Opslaan")
+      )
+    );
+  }
+
+  function renderSchema(){
+    var DORD={Ma:1,Di:2,Wo:3,Do:4,Vr:5};
+    var children=[];
+    children.push(e("div",{key:"evts",style:{display:"flex",flexDirection:"column",gap:8,marginBottom:20}},
+      [{dt:"29 mei",nm:"Open water 6 km",c:"#1D9E75",w:11},{dt:"5 juni",nm:"Open water 12 km",c:"#185FA5",w:12},{dt:"4 sept",nm:"IJsselmeeroversteek 22 km",c:"#993C1D",w:25}].map(function(ev){return e("div",{key:ev.w,style:{display:"flex",alignItems:"center",gap:10,padding:"11px 14px",background:"#fff",borderRadius:12,borderLeft:"4px solid "+ev.c,boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},
+        e("span",{style:{fontSize:13,fontWeight:700,color:ev.c,minWidth:52}},ev.dt),
+        e("span",{style:{fontSize:13,flex:1}},ev.nm),
+        e("span",{style:{fontSize:11,color:"#bbb"}},"wk ",ev.w)
+      );})
+    ));
+    var lastPh="";
+    WKS.forEach(function(w,i){
+      var wn=i+1;var pk=PMAP[wn]||"o";var p=PH[pk];var isOpen=openWk===wn;var isCur=wn===curWk;
+      if(pk!==lastPh){lastPh=pk;children.push(e("div",{key:"ph"+wn,style:{fontSize:12,fontWeight:700,color:"#bbb",marginTop:wn>1?18:0,marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}},p.n," — ",p.rng));}
+      var allS=w.sessions.slice();
+      if(!w.sessions.some(function(s){return s.day==="Do";})){(DRY[pk]||[]).forEach(function(d){allS.push(Object.assign({},d,{day:"Do"}));});}
+      allS.sort(function(a,b){return (DORD[a.day]||9)-(DORD[b.day]||9);});
+      children.push(e("div",{key:wn,style:{background:"#fff",border:isCur?"2px solid "+p.c:"1px solid rgba(0,0,0,0.07)",borderRadius:14,marginBottom:6,overflow:"hidden",boxShadow:isCur?"0 2px 8px "+p.c+"44":"0 1px 3px rgba(0,0,0,0.04)"}},
+        e("div",{onClick:function(){setOpenWk(isOpen?null:wn);},style:{display:"flex",alignItems:"center",gap:10,padding:"13px 14px",cursor:"pointer"}},
+          e("div",{style:{width:10,height:10,borderRadius:5,background:p.c,flexShrink:0}}),
+          e("span",{style:{fontSize:14,fontWeight:700,flex:1}},"Week ",wn,isCur&&e("span",{style:{fontSize:11,padding:"2px 8px",borderRadius:10,background:p.bg,color:p.c,marginLeft:8,fontWeight:600}},"nu")),
+          e("span",{style:{fontSize:11,color:"#bbb",marginRight:4}},w.dates),
+          e("span",{style:{fontSize:12,fontWeight:700,padding:"3px 9px",borderRadius:20,background:p.bg,color:p.c}},w.vol," km"),
+          e("span",{style:{fontSize:12,color:"#ddd"}},isOpen?"▲":"▼")
+        ),
+        isOpen&&e("div",{style:{padding:"0 14px 14px",borderTop:"1px solid rgba(0,0,0,0.06)"}},
+          e("div",{style:{paddingTop:10}},
+            allS.map(function(ss,j){return e("div",{key:j,style:{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 0",borderBottom:j<allS.length-1?"1px solid rgba(0,0,0,0.05)":"none"}},
+              e("span",{style:{fontSize:12,fontWeight:700,color:"#bbb",minWidth:26,paddingTop:4}},ss.day),
+              badge(ss.type),
+              e("span",{style:{fontSize:13,flex:1,lineHeight:1.55,paddingTop:2}},ss.desc),
+              e("span",{style:{fontSize:12,color:"#bbb",flexShrink:0,paddingTop:2}},ss.dist)
+            );})
+          ),
+          e("div",{style:{marginTop:12,borderLeft:"3px solid "+p.c,padding:"8px 12px",background:p.bg+"55",borderRadius:"0 8px 8px 0",fontSize:13,color:"#555",lineHeight:1.65}},w.tip)
+        )
+      ));
+    });
+    return e("div",null,children);
+  }
+
+  function renderTips(){
+    var TCOLS={voeding:"#1D9E75",ademhaling:"#185FA5",yoga:"#534AB7",algemeen:"#BA7517"};
+    var TLABS={voeding:"Voeding",ademhaling:"Ademhaling",yoga:"Yoga",algemeen:"Algemeen"};
+    var TICS={voeding:"🥗",ademhaling:"🌬️",yoga:"🧘",algemeen:"💡"};
+    var c=TCOLS[tTab];
+    return e("div",null,
+      e("div",{style:{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}},
+        Object.keys(TIPS).map(function(k){return e("button",{key:k,onClick:function(){setTTab(k);},style:{fontSize:13,padding:"8px 14px",borderRadius:20,border:"none",background:tTab===k?TCOLS[k]:"#fff",color:tTab===k?"#fff":"#666",cursor:"pointer",fontFamily:"inherit",fontWeight:tTab===k?700:400,boxShadow:"0 1px 3px rgba(0,0,0,0.08)"}},TICS[k]+" "+TLABS[k]);})
+      ),
+      e("div",{style:{display:"flex",flexDirection:"column",gap:10}},
+        (TIPS[tTab]||[]).map(function(item,i){return e("div",{key:i,style:{background:"#fff",borderLeft:"4px solid "+c,borderRadius:"0 14px 14px 0",padding:"14px 16px",boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},
+          e("div",{style:{fontSize:14,fontWeight:700,marginBottom:6}},item.t),
+          e("div",{style:{fontSize:14,color:"#555",lineHeight:1.7}},item.b)
+        );})
+      )
+    );
+  }
+
+  function renderLogboek(){
+    var allL=Object.entries(logs).sort(function(a,b){return b[0]>a[0]?1:-1;}).slice(0,60);
+    var CW=300,CH=130,PL=38,PR=10,PT=12,PB=24;
+    var IW=CW-PL-PR,IH=CH-PT-PB;
+    var pts=wts.length>=2?logArr.map(function(a,i){return {x:PL+(i/(logArr.length-1))*IW,y:PT+IH-(+a[1].weight-wMin)/(wMax-wMin)*IH};}):[];
+    var pathD=pts.length>=2?"M "+pts.map(function(p){return p.x.toFixed(1)+","+p.y.toFixed(1);}).join(" L "):"";
+    var sleeps=allL.filter(function(a){return a[1].sleep&&!isNaN(+a[1].sleep);}).map(function(a){return +a[1].sleep;}).slice(0,7);
+    var avgSleep=sleeps.length?Math.round(sleeps.reduce(function(a,b){return a+b;},0)/sleeps.length*10)/10:null;
+    var mArr=allL.filter(function(a){return a[1].mood;}).map(function(a){return +a[1].mood;}).slice(0,7);
+    var avgMV=mArr.length?mArr.reduce(function(a,b){return a+b;},0)/mArr.length:null;
+    var moodInfo=avgMV?MOODS.reduce(function(p,c){return Math.abs(c.v-avgMV)<Math.abs(p.v-avgMV)?c:p;}):null;
+    return e("div",null,
+      e("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:10,marginBottom:20}},
+        [{l:"Gem. slaap",v:avgSleep?avgSleep+"u":"–",c:"#185FA5"},{l:"Gevoel (7d)",v:moodInfo?moodInfo.e:"–",c:"#534AB7"},{l:"Gewicht",v:wts.length?wts[wts.length-1].toFixed(1)+" kg":"–",c:"#1D9E75"}].map(function(card,i){return e("div",{key:i,style:{background:"#fff",borderRadius:14,padding:"14px 10px",boxShadow:"0 1px 3px rgba(0,0,0,0.06)",textAlign:"center"}},e("div",{style:{fontSize:11,color:"#bbb",marginBottom:6,fontWeight:600}},card.l),e("div",{style:{fontSize:22,fontWeight:700,color:card.c}},card.v));})
+      ),
+      e("div",{style:{fontSize:14,fontWeight:700,marginBottom:10}},"Gewichtsverloop"),
+      wts.length>=2?e("div",{style:{background:"#fff",borderRadius:14,padding:14,marginBottom:20,boxShadow:"0 1px 3px rgba(0,0,0,0.06)",overflowX:"auto"}},
+        e("svg",{width:CW,height:CH,style:{display:"block",maxWidth:"100%"}},
+          [0,0.5,1].map(function(f){var y=PT+f*IH;return e("g",{key:f},e("line",{x1:PL,y1:y,x2:CW-PR,y2:y,stroke:"rgba(0,0,0,0.07)",strokeWidth:1}),e("text",{x:PL-4,y:y+4,fontSize:10,fill:"#ccc",textAnchor:"end"},(wMax-f*(wMax-wMin)).toFixed(1)));})
+          .concat(pathD?[e("path",{key:"path",d:pathD,fill:"none",stroke:"#185FA5",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round"})]:[] )
+          .concat(pts.map(function(p,i){return e("circle",{key:"c"+i,cx:p.x,cy:p.y,r:4,fill:"#185FA5",stroke:"#fff",strokeWidth:2});}))
+        )
+      ):e("div",{style:{background:"#fff",borderRadius:12,padding:"12px 16px",fontSize:13,color:"#bbb",marginBottom:20}},"Log minstens 2 gewichtsmetingen voor een grafiek."),
+      e("div",{style:{fontSize:14,fontWeight:700,marginBottom:10}},"Alle logs"),
+      allL.length===0?e("div",{style:{background:"#fff",borderRadius:12,padding:"14px 16px",fontSize:14,color:"#bbb"}},"Nog geen logs. Start via Vandaag."):
+      e("div",{style:{display:"flex",flexDirection:"column",gap:8}},
+        allL.map(function(a){
+          var key=a[0];var entry=a[1];
+          var mood=MOODS.filter(function(m){return m.v===+entry.mood;})[0]||MOODS[2];
+          var d=new Date(key+"T12:00:00");
+          return e("div",{key:key,style:{background:"#fff",borderRadius:14,padding:"12px 14px",boxShadow:"0 1px 3px rgba(0,0,0,0.05)"}},
+            e("div",{style:{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}},
+              e("span",{style:{fontSize:13,color:"#aaa",minWidth:90}},d.toLocaleDateString("nl-NL",{weekday:"short",day:"numeric",month:"short"})),
+              e("span",{style:{fontSize:20}},mood.e),
+              e("span",{style:{fontSize:13,color:"#aaa"}},mood.l),
+              entry.weight?e("span",{style:{fontSize:14,fontWeight:700,marginLeft:"auto",color:"#185FA5"}},(+entry.weight).toFixed(1)+" kg"):null,
+              entry.sleep?e("span",{style:{fontSize:13,color:"#aaa"}},"😴 "+entry.sleep+"u"):null
+            ),
+            entry.notes?e("div",{style:{fontSize:13,color:"#666",marginTop:8,lineHeight:1.6,borderTop:"1px solid rgba(0,0,0,0.06)",paddingTop:8}},entry.notes):null
+          );
+        })
+      )
+    );
+  }
+
+  var NAV=[{id:"vandaag",l:"Vandaag",ic:"🏊"},{id:"schema",l:"Schema",ic:"📅"},{id:"tips",l:"Tips",ic:"💡"},{id:"logboek",l:"Logboek",ic:"📊"}];
+  return e("div",{style:{fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",maxWidth:600,margin:"0 auto",minHeight:"100vh",background:"#f0eeea"}},
+    e("div",{style:{background:"#fff",padding:"16px 16px 0",borderBottom:"1px solid rgba(0,0,0,0.07)",position:"sticky",top:0,zIndex:10}},
+      e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}},
+        e("div",null,e("div",{style:{fontSize:18,fontWeight:800,letterSpacing:"-0.02em"}},"IJsselmeer 2026"),e("div",{style:{fontSize:12,color:"#bbb",marginTop:2}},"4 september · 22 km oversteek")),
+        e("span",{style:{fontSize:12,padding:"5px 12px",borderRadius:20,background:ph.bg,color:ph.c,fontWeight:700,whiteSpace:"nowrap"}},"Wk "+curWk+" · "+ph.n)
+      ),
+      e("div",{style:{display:"flex"}},
+        NAV.map(function(n){return e("button",{key:n.id,onClick:function(){setTab(n.id);},style:{flex:1,padding:"8px 2px 11px",fontSize:11,background:"none",border:"none",borderBottom:"3px solid "+(tab===n.id?ph.c:"transparent"),color:tab===n.id?ph.c:"#bbb",cursor:"pointer",fontFamily:"inherit",fontWeight:tab===n.id?700:400,display:"flex",flexDirection:"column",alignItems:"center",gap:3}},e("span",{style:{fontSize:18}},n.ic),n.l);})
+      )
+    ),
+    e("div",{style:{padding:"16px 16px 60px"}},
+      tab==="vandaag"?renderVandaag():tab==="schema"?renderSchema():tab==="tips"?renderTips():renderLogboek()
+    )
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>

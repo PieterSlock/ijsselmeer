@@ -572,4 +572,153 @@ function App(){
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
 </script>
 </body>
-</html>
+</html>var WKS = [
+  {vol:14,dates:"16-20 mrt",tip:"Gebruik week 1 om je ritme te vinden. Za altijd optioneel.",sessions:[
+    {day:"Ma",type:"endurance",desc:"4 km comfortabel pool - nulmeting",dist:"4 km"},
+    {day:"Wo",type:"technique",desc:"3 km techniek pool: slaglengte, sighting",dist:"3 km"},
+    {day:"Vr",type:"long",desc:"6 km pool - zonder eten, wel drinken",dist:"6 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:16,dates:"23-27 mrt",tip:"Eerste voedingstest bij Hazewinkel zodra je er bent. Pool: gel niet nodig onder 8 km.",sessions:[
+    {day:"Ma",type:"endurance",desc:"5 km steady pool",dist:"5 km"},
+    {day:"Wo",type:"interval",desc:"8x200m plus 2 km warm-cool pool",dist:"3.5 km"},
+    {day:"Vr",type:"long",desc:"7 km pool - drinkpauze elke 2 km aan de kant",dist:"7 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km techniek",dist:"2 km"}]},
+  {vol:18,dates:"30 mrt-3 apr",tip:"Pool max 10 km zonder eten. Langer gaat naar Hazewinkel.",sessions:[
+    {day:"Ma",type:"endurance",desc:"5 km steady pool",dist:"5 km"},
+    {day:"Di",type:"interval",desc:"10x200m pool op goed tempo",dist:"4 km"},
+    {day:"Wo",type:"technique",desc:"3 km pull buoy plus drills pool",dist:"3 km"},
+    {day:"Vr",type:"long",desc:"8 km pool - goed pre-loaden de avond ervoor",dist:"8 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:16,dates:"6-10 apr",tip:"Herstelweek. Za overslaan is slim.",sessions:[
+    {day:"Ma",type:"recovery",desc:"3 km herstel pool",dist:"3 km"},
+    {day:"Wo",type:"technique",desc:"4 km wetsuit plus drills pool",dist:"4 km"},
+    {day:"Vr",type:"endurance",desc:"7 km pool comfortabel",dist:"7 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km heel rustig",dist:"2 km"}]},
+  {vol:20,dates:"13-17 apr",tip:"Open water kan starten als het water 14 graden of meer is.",sessions:[
+    {day:"Ma",type:"endurance",desc:"5 km steady pool",dist:"5 km"},
+    {day:"Di",type:"interval",desc:"6x400m plus 2 km warm-cool pool",dist:"4.5 km"},
+    {day:"Wo",type:"openwater",desc:"Open water sessie indien warm genoeg",dist:"4 km"},
+    {day:"Vr",type:"long",desc:"9 km pool - drink elke 45 min aan de boordrand",dist:"9 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:22,dates:"20-24 apr",tip:"10 km pool = max zonder eten. Daarboven gaat alles naar Hazewinkel met zwemboei.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km steady pool",dist:"6 km"},
+    {day:"Di",type:"interval",desc:"5x500m op streeftempo pool",dist:"4.5 km"},
+    {day:"Wo",type:"openwater",desc:"Open water: navigatie oefenen",dist:"4.5 km"},
+    {day:"Vr",type:"long",desc:"10 km pool - MAXIMUM pool zonder eten, goed pre-loaden!",dist:"10 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2-3 km rustig",dist:"2-3 km"}]},
+  {vol:24,dates:"27 apr-1 mei",tip:"Eerste 11 km sessie naar Hazewinkel donderdag! Eten meenemen in zwemboei.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km steady pool",dist:"6 km"},
+    {day:"Di",type:"interval",desc:"4x1 km blokken pool op wedstrijdtempo",dist:"5 km"},
+    {day:"Wo",type:"openwater",desc:"Open water: 6 km navigatie oefenen",dist:"6 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 5 km MET ETEN: eerste keer gel uit zwemboei testen",dist:"5 km"},
+    {day:"Vr",type:"long",desc:"8 km pool - zonder eten",dist:"8 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:27,dates:"4-8 mei",tip:"EERSTE HAZEWINKEL WEEK! Do = lange sessie met eten. Vr pool max 10 km.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km steady pool",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 4 km: wennen aan OW en sighting",dist:"4 km"},
+    {day:"Wo",type:"interval",desc:"8x200m scherp pool + droogtraining na",dist:"4 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 8 km MET ETEN: gel elke 40 min uit zwemboei - BENCHMARK",dist:"8 km"},
+    {day:"Vr",type:"endurance",desc:"5 km pool rustig herstel na lange do",dist:"5 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:25,dates:"11-15 mei",tip:"Do Hazewinkel wordt je lange dag. Taper richting 29 mei begint.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool comfortabel",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 4 km: ritme en sighting",dist:"4 km"},
+    {day:"Wo",type:"interval",desc:"6x300m pool scherp",dist:"3.5 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 8 km MET ETEN: wedstrijdtempo voelen 1:47/100m",dist:"8 km"},
+    {day:"Vr",type:"endurance",desc:"4 km pool lossen",dist:"4 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km rustig",dist:"2 km"}]},
+  {vol:18,dates:"18-22 mei",tip:"Taper voor 29 mei. Hazewinkel do kort houden - fris aan de start.",sessions:[
+    {day:"Ma",type:"endurance",desc:"5 km pool steady",dist:"5 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 3 km rustig, wedstrijdgevoel",dist:"3 km"},
+    {day:"Wo",type:"interval",desc:"5x200m scherp plus 1 km pool",dist:"2 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 5 km: preview ritme voor 29 mei, MET ETEN",dist:"5 km"},
+    {day:"Vr",type:"recovery",desc:"2 km lossen pool - laatste zwem voor race",dist:"2 km"}]},
+  {vol:11,dates:"25-29 mei",tip:"Raceweek - ga niet all-out op 29 mei, vrijdag 5 juni heb je de 12 km.",sessions:[
+    {day:"Ma",type:"recovery",desc:"3 km pool rustig",dist:"3 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 2 km heel rustig, wetsuit check",dist:"2 km"},
+    {day:"Wo",type:"recovery",desc:"1 km losse benen pool",dist:"1 km"},
+    {day:"Do",type:"race",desc:"WEDSTRIJD: 6 km open water (29 mei)",dist:"6 km"}]},
+  {vol:12,dates:"1-5 jun",tip:"Zo weinig mogelijk tot vrijdag. Vertrouw op de opbouw.",sessions:[
+    {day:"Ma",type:"recovery",desc:"3 km pool herstelzwemmen",dist:"3 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 2 km heel rustig",dist:"2 km"},
+    {day:"Wo",type:"recovery",desc:"2 km pool heel rustig",dist:"2 km"},
+    {day:"Do",type:"recovery",desc:"Hazewinkel - 1 km losse benen",dist:"1 km"},
+    {day:"Vr",type:"race",desc:"WEDSTRIJD: 12 km open water (5 juni) - MET ETEN",dist:"12 km"}]},
+  {vol:12,dates:"8-12 jun",tip:"Twee events achter de rug. Echte rust - verdien het weekend met je gezin.",sessions:[
+    {day:"Ma",type:"recovery",desc:"3 km pool rustig",dist:"3 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 3 km rustig herstel",dist:"3 km"},
+    {day:"Wo",type:"technique",desc:"3 km pool drills",dist:"3 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 3 km comfortabel",dist:"3 km"}]},
+  {vol:17,dates:"15-19 jun",tip:"Herstel klaar. Do Hazewinkel opnieuw langer. Za optioneel terug.",sessions:[
+    {day:"Ma",type:"endurance",desc:"4 km pool steady",dist:"4 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 4 km ritme",dist:"4 km"},
+    {day:"Wo",type:"interval",desc:"6x200m pool ritme terugvinden",dist:"3 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 6 km MET ETEN: voeding herkalibreren",dist:"6 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2-3 km rustig",dist:"2-3 km"}]},
+  {vol:25,dates:"22-26 jun",tip:"Do Hazewinkel = de echte lange dag. Pool blijft onder 10 km.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool steady",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 5 km: navigeren en tempo",dist:"5 km"},
+    {day:"Wo",type:"interval",desc:"4x600m pool plus 2 km",dist:"4.5 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 8 km MET ETEN: gel elke 40 min, voedingsritme",dist:"8 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 3 km rustig",dist:"3 km"}]},
+  {vol:27,dates:"29 jun-3 jul",tip:"Do Hazewinkel groeit naar 10 km. Dit is je sleuteltraining van de week.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 5 km op streeftempo 1:47/100m",dist:"5 km"},
+    {day:"Wo",type:"interval",desc:"3x2 km pool blokken",dist:"7 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 10 km MET ETEN: eerste keer 10 km OW!",dist:"10 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 3 km rustig herstel",dist:"3 km"}]},
+  {vol:28,dates:"6-10 jul",tip:"Do 10+ km Hazewinkel met eten is de kern van je voorbereiding.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 6 km: simuleer IJsselmeer blokken",dist:"6 km"},
+    {day:"Wo",type:"interval",desc:"4x2 km pool op streeftempo",dist:"8 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 10 km MET ETEN: voeding elke 40 min, mentale blokken",dist:"10 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 3 km rustig",dist:"3 km"}]},
+  {vol:22,dates:"13-17 jul",tip:"Herstelweek. Hazewinkel do korter. Schouders checken.",sessions:[
+    {day:"Ma",type:"recovery",desc:"5 km pool herstel",dist:"5 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 4 km rustig",dist:"4 km"},
+    {day:"Wo",type:"technique",desc:"5 km pool techniek",dist:"5 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 6 km MET ETEN: herstelritme",dist:"6 km"}]},
+  {vol:32,dates:"20-24 jul",tip:"Do Hazewinkel 12 km = GROTE MIJLPAAL. Za aangeraden als langste sessie.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool steady",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 6 km op wedstrijdtempo",dist:"6 km"},
+    {day:"Wo",type:"interval",desc:"4x2 km pool",dist:"8 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 12 km MET ETEN: grote mijlpaal! Voeding elke 40 min",dist:"12 km"},
+    {day:"Za",type:"optional",desc:"AANGERADEN: 5-6 km Hazewinkel MET ETEN - extra open water km",dist:"5-6 km"}]},
+  {vol:36,dates:"27-31 jul",tip:"Do Hazewinkel 14 km = piek OW sessie. Za 17 km = langste training ooit. Eten beide keren!",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 7 km: open water piek tussensessie",dist:"7 km"},
+    {day:"Wo",type:"interval",desc:"3x2 km pool blokken",dist:"7 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 14 km MET ETEN: gesimuleerde oversteek eerste helft!",dist:"14 km"},
+    {day:"Za",type:"optional",desc:"AANGERADEN: 17 km Hazewinkel MET ETEN - PIEKTRAINING",dist:"17 km"}]},
+  {vol:34,dates:"3-7 aug",tip:"Do Hazewinkel 12 km blijft het anker. Za iets korter na de piekweek.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool steady",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 7 km: wedstrijdsimulatie 1:47/100m",dist:"7 km"},
+    {day:"Wo",type:"interval",desc:"4x2 km pool op wedstrijdtempo",dist:"8 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 12 km MET ETEN: mentale voorbereiding september",dist:"12 km"},
+    {day:"Za",type:"optional",desc:"AANGERADEN: 10 km Hazewinkel MET ETEN",dist:"10 km"}]},
+  {vol:27,dates:"10-14 aug",tip:"Volume terug. Kwaliteit boven kwantiteit. Za optioneel.",sessions:[
+    {day:"Ma",type:"endurance",desc:"6 km pool",dist:"6 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 6 km steady",dist:"6 km"},
+    {day:"Wo",type:"interval",desc:"3x2 km pool",dist:"7 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 10 km MET ETEN: comfortabel doorpaddelen",dist:"10 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 5 km Hazewinkel MET ETEN",dist:"5 km"}]},
+  {vol:22,dates:"17-21 aug",tip:"Laatste intensieve week. Na vrijdag start de taper.",sessions:[
+    {day:"Ma",type:"endurance",desc:"5 km pool",dist:"5 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 5 km",dist:"5 km"},
+    {day:"Wo",type:"interval",desc:"5x400m scherp plus 2 km pool",dist:"4 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 10 km MET ETEN: laatste intensieve lange sessie",dist:"10 km"},
+    {day:"Vr",type:"endurance",desc:"3 km pool",dist:"3 km"}]},
+  {vol:15,dates:"24-28 aug",tip:"Taper - volume gehalveerd. Za optioneel kort.",sessions:[
+    {day:"Ma",type:"endurance",desc:"4 km pool comfortabel",dist:"4 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 3 km scherp op wedstrijdtempo",dist:"3 km"},
+    {day:"Wo",type:"interval",desc:"4x200m scherp plus 1 km pool",dist:"2 km"},
+    {day:"Do",type:"openwater",desc:"Hazewinkel - 4 km MET ETEN: laatste voedingscheck",dist:"4 km"},
+    {day:"Vr",type:"endurance",desc:"2 km pool rustig",dist:"2 km"},
+    {day:"Za",type:"optional",desc:"OPTIONEEL: 2 km heel rustig",dist:"2 km"}]},
+  {vol:7,dates:"31 aug-4 sep",tip:"Je bent klaar. 25 weken werk liggen in je lichaam. Doel: 6u15.",sessions:[
+    {day:"Ma",type:"endurance",desc:"3 km pool rustig",dist:"3 km"},
+    {day:"Di",type:"openwater",desc:"Hazewinkel - 2 km heel rustig, laatste OW check",dist:"2 km"},
+    {day:"Wo",type:"recovery",desc:"1 km pool lossen",dist:"1 km"},
+    {day:"Do",type:"recovery",desc:"30 min wandelen of 1 km heel rustig",dist:"-"},
+    {day:"Vr",type:"race",desc:"IJSSELMEEROVERSTEEK - 21 km - DOEL: 6u15",dist:"21 km"}]}
+];
